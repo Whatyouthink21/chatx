@@ -2692,7 +2692,8 @@
                     return;
                 }
                 
-                const roomRef = await db.collection('rooms').add({
+                // Create the room data object
+                const roomData = {
                     name: name,
                     code: code,
                     adminId: currentUser.uid,
@@ -2700,7 +2701,9 @@
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                     lastMessage: '',
                     lastMessageTime: firebase.firestore.FieldValue.serverTimestamp()
-                });
+                };
+                
+                const roomRef = await db.collection('rooms').add(roomData);
                 
                 // Add system message
                 await db.collection('rooms').doc(roomRef.id).collection('messages').add({
@@ -2710,11 +2713,15 @@
                 });
                 
                 closeModal('createRoomModal');
+                hideLoading();
                 showToast('Room created successfully!');
+                
+                // Enter the newly created room
+                enterRoom(roomRef.id, roomData);
             } catch (error) {
                 showToast('Error creating room: ' + error.message);
+                hideLoading();
             }
-            hideLoading();
         }
 
         async function joinRoom() {
@@ -2736,7 +2743,7 @@
                 }
                 
                 const roomDoc = snapshot.docs[0];
-                const roomData = roomDoc.data();
+                let roomData = roomDoc.data();
                 
                 if (roomData.members.includes(currentUser.uid)) {
                     // User is already a member - just open the chat
@@ -2747,9 +2754,13 @@
                     return;
                 }
                 
+                // Add user to members
                 await db.collection('rooms').doc(roomDoc.id).update({
                     members: firebase.firestore.FieldValue.arrayUnion(currentUser.uid)
                 });
+                
+                // Update local roomData with new member
+                roomData.members = [...roomData.members, currentUser.uid];
                 
                 // Add system message
                 await db.collection('rooms').doc(roomDoc.id).collection('messages').add({
@@ -2759,14 +2770,15 @@
                 });
                 
                 closeModal('joinRoomModal');
+                hideLoading();
                 showToast('Joined room successfully!');
                 
                 // Automatically enter the room after joining
                 enterRoom(roomDoc.id, roomData);
             } catch (error) {
                 showToast('Error joining room: ' + error.message);
+                hideLoading();
             }
-            hideLoading();
         }
 
         function loadRooms() {
@@ -2818,10 +2830,13 @@
         }
 
         async function enterRoom(roomId, roomData) {
+            console.log('Entering room:', roomId, roomData);
+            
             currentRoom = roomId;
             currentRoomData = roomData;
             
-            document.getElementById('chatRoomName').textContent = roomData.name;
+            // Set room name in header
+            document.getElementById('chatRoomName').textContent = roomData.name || 'Chat Room';
             document.getElementById('chatMessages').innerHTML = '';
             
             // Update admin-only buttons visibility
@@ -2834,14 +2849,22 @@
             const isMuted = mutedRooms[roomId] || false;
             document.getElementById('muteToggle').classList.toggle('active', isMuted);
             
-            // Handle desktop vs mobile
+            // Handle desktop vs mobile view switching
             if (isDesktop) {
+                // Desktop: Show chat alongside sidebar
+                document.getElementById('roomsScreen').classList.add('active');
                 document.getElementById('chatScreen').classList.add('desktop-active');
                 document.getElementById('noChatSelected').classList.add('hidden');
             } else {
-                showScreen('chatScreen');
+                // Mobile: Show only chat screen
+                document.querySelectorAll('.screen').forEach(s => {
+                    s.classList.remove('active');
+                    s.classList.remove('desktop-active');
+                });
+                document.getElementById('chatScreen').classList.add('active');
             }
             
+            // Load messages and start listeners
             loadMessages();
             listenToTyping();
             updateOnlineCount();
