@@ -2739,9 +2739,11 @@
                 const roomData = roomDoc.data();
                 
                 if (roomData.members.includes(currentUser.uid)) {
-                    showToast('You are already in this room');
+                    // User is already a member - just open the chat
                     hideLoading();
                     closeModal('joinRoomModal');
+                    showToast('Opening chat room...');
+                    enterRoom(roomDoc.id, roomData);
                     return;
                 }
                 
@@ -2758,6 +2760,9 @@
                 
                 closeModal('joinRoomModal');
                 showToast('Joined room successfully!');
+                
+                // Automatically enter the room after joining
+                enterRoom(roomDoc.id, roomData);
             } catch (error) {
                 showToast('Error joining room: ' + error.message);
             }
