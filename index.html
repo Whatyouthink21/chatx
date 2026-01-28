@@ -1771,6 +1771,460 @@
                 max-width: 50%;
             }
         }
+
+        /* ========== CALL SCREEN ========== */
+        .call-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 5000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4c1d95 100%);
+        }
+
+        .call-screen.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .call-bg {
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+
+        .call-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 40px;
+        }
+
+        .call-avatar {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            margin-bottom: 24px;
+            box-shadow: 0 0 60px rgba(139, 92, 246, 0.5);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .call-avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .call-name {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .call-status {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            margin-bottom: 16px;
+        }
+
+        .call-timer {
+            font-size: 1.5rem;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+            opacity: 0.9;
+            min-height: 36px;
+        }
+
+        .call-videos {
+            position: absolute;
+            inset: 0;
+            display: none;
+        }
+
+        .call-videos.active {
+            display: block;
+        }
+
+        .call-videos #remoteVideo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background: #000;
+        }
+
+        .call-videos #localVideo {
+            position: absolute;
+            bottom: 120px;
+            right: 20px;
+            width: 120px;
+            height: 160px;
+            border-radius: 16px;
+            object-fit: cover;
+            background: #1e293b;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            border: 3px solid rgba(255,255,255,0.2);
+        }
+
+        @media (min-width: 768px) {
+            .call-videos #localVideo {
+                width: 180px;
+                height: 240px;
+                bottom: 140px;
+                right: 40px;
+            }
+        }
+
+        .call-controls {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 10;
+        }
+
+        .call-control-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.2);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .call-control-btn:hover {
+            background: rgba(255,255,255,0.25);
+            transform: scale(1.1);
+        }
+
+        .call-control-btn.muted {
+            background: rgba(239, 68, 68, 0.3);
+            border-color: #ef4444;
+        }
+
+        .call-control-btn.end-call {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            border: none;
+            transform: rotate(135deg);
+        }
+
+        .call-control-btn.end-call:hover {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            transform: rotate(135deg) scale(1.1);
+        }
+
+        .call-control-btn.end-call .call-icon {
+            transform: rotate(-135deg);
+        }
+
+        .call-icon {
+            font-size: 1.8rem;
+        }
+
+        /* Incoming Call Modal */
+        .incoming-call-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 6000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .incoming-call-modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .incoming-call-card {
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+            border-radius: 32px;
+            padding: 48px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+            animation: scaleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            max-width: 360px;
+            width: 90%;
+        }
+
+        .incoming-call-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            margin: 0 auto 24px;
+            box-shadow: 0 0 40px rgba(139, 92, 246, 0.4);
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .incoming-call-avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .incoming-call-name {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .incoming-call-type {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-bottom: 32px;
+        }
+
+        .incoming-call-actions {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+        }
+
+        .incoming-call-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 28px;
+            border-radius: 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .incoming-call-btn span:first-child {
+            font-size: 2rem;
+        }
+
+        .incoming-call-btn.decline {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            border: 2px solid rgba(239, 68, 68, 0.4);
+        }
+
+        .incoming-call-btn.decline:hover {
+            background: rgba(239, 68, 68, 0.4);
+            transform: scale(1.05);
+        }
+
+        .incoming-call-btn.accept {
+            background: rgba(34, 197, 94, 0.2);
+            color: #86efac;
+            border: 2px solid rgba(34, 197, 94, 0.4);
+        }
+
+        .incoming-call-btn.accept:hover {
+            background: rgba(34, 197, 94, 0.4);
+            transform: scale(1.05);
+        }
+
+        @keyframes ringing {
+            0%, 100% { transform: rotate(-15deg); }
+            50% { transform: rotate(15deg); }
+        }
+
+        .ringing {
+            animation: ringing 0.3s ease-in-out infinite;
+        }
+
+        /* ========== USER SEARCH STYLES ========== */
+        .user-search-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px;
+            border-radius: 16px;
+            background: var(--bg-secondary);
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: slideUp 0.3s ease backwards;
+        }
+
+        .user-search-card:hover {
+            background: var(--bg-tertiary);
+            transform: translateX(8px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .user-search-avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px var(--primary-glow);
+            object-fit: cover;
+        }
+
+        .user-search-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-search-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .user-search-username {
+            font-size: 0.85rem;
+            color: var(--primary);
+            margin-bottom: 2px;
+        }
+
+        .user-search-bio {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-search-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .profile-username-display {
+            margin-top: 4px;
+        }
+
+        /* Direct Messages Section */
+        .dm-section {
+            margin-top: 24px;
+        }
+
+        .dm-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px;
+            border-radius: 14px;
+            background: var(--bg-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 8px;
+        }
+
+        .dm-item:hover {
+            background: var(--bg-tertiary);
+            transform: translateX(6px);
+        }
+
+        .dm-item.active {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(139, 92, 246, 0.1));
+            border: 2px solid var(--primary-light);
+        }
+
+        .dm-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ec4899, #f43f5e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            object-fit: cover;
+        }
+
+        .dm-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .dm-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .dm-preview {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .dm-badge {
+            background: linear-gradient(135deg, #ec4899, #f43f5e);
+            color: white;
+            font-size: 0.65rem;
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        /* Tabs for Rooms vs DMs */
+        .chat-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .chat-tab {
+            flex: 1;
+            padding: 12px;
+            border-radius: 12px;
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .chat-tab.active {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+
+        .chat-tab:hover:not(.active) {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
     </style>
 </head>
 <body>
@@ -1848,6 +2302,7 @@
                 <div class="sidebar-header">
                     <h1>ChatX</h1>
                     <div class="header-actions">
+                        <button class="icon-btn" id="searchUsersBtn" title="Search Users">🔍</button>
                         <button class="icon-btn" id="themeToggle" title="Toggle Theme">🌓</button>
                         <button class="icon-btn" id="settingsBtn" title="Settings">⚙️</button>
                         <button class="icon-btn" id="myProfileBtn" title="Profile">👤</button>
@@ -1866,11 +2321,29 @@
                         </button>
                     </div>
                     
-                    <div class="section-title">Your Chats</div>
-                    <div class="room-list" id="roomList">
-                        <div class="empty-state">
-                            <span class="icon">💬</span>
-                            <p>No rooms yet.<br>Create or join one!</p>
+                    <!-- Chat Tabs -->
+                    <div class="chat-tabs">
+                        <button class="chat-tab active" id="roomsTab" data-tab="rooms">💬 Rooms</button>
+                        <button class="chat-tab" id="dmsTab" data-tab="dms">👤 Direct</button>
+                    </div>
+                    
+                    <!-- Rooms List -->
+                    <div id="roomsSection">
+                        <div class="room-list" id="roomList">
+                            <div class="empty-state">
+                                <span class="icon">💬</span>
+                                <p>No rooms yet.<br>Create or join one!</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Direct Messages List -->
+                    <div id="dmsSection" style="display:none;">
+                        <div class="room-list" id="dmList">
+                            <div class="empty-state">
+                                <span class="icon">👤</span>
+                                <p>No direct messages yet.<br>Search for users to start chatting!</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1892,6 +2365,8 @@
                         <div class="chat-status" id="chatStatus"></div>
                     </div>
                     <div class="header-actions">
+                        <button class="icon-btn" id="voiceCallBtn" title="Voice Call">📞</button>
+                        <button class="icon-btn" id="videoCallBtn" title="Video Call">📹</button>
                         <button class="icon-btn" id="searchMsgBtn" title="Search">🔍</button>
                         <button class="icon-btn" id="chatMenuBtn" title="Menu">⋮</button>
                     </div>
@@ -2019,6 +2494,14 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
+                    <label>Username (unique, 3-20 chars, alphanumeric + underscore)</label>
+                    <div style="position:relative;">
+                        <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);">@</span>
+                        <input type="text" id="editUsername" placeholder="your_username" style="padding-left:32px;" maxlength="20">
+                    </div>
+                    <small id="usernameStatus" style="display:block;margin-top:6px;font-size:0.8rem;"></small>
+                </div>
+                <div class="form-group">
                     <label>Display Name</label>
                     <input type="text" id="editName" placeholder="Your name">
                 </div>
@@ -2133,6 +2616,56 @@
         </div>
     </div>
 
+    <!-- User Search Modal -->
+    <div class="modal-overlay" id="userSearchModal">
+        <div class="modal search-container">
+            <div class="modal-header">
+                <h2>🔍 Search Users</h2>
+                <button class="modal-close">✕</button>
+            </div>
+            <div class="search-box">
+                <div class="search-input-wrapper">
+                    <span class="search-icon">@</span>
+                    <input type="text" id="userSearchInput" placeholder="Search by username...">
+                </div>
+            </div>
+            <div class="search-results" id="userSearchResults">
+                <p style="text-align:center;color:var(--text-secondary);padding:48px;">Search for users by their username</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Profile Preview Modal -->
+    <div class="modal-overlay" id="userPreviewModal">
+        <div class="modal" style="overflow:hidden;">
+            <div class="profile-banner">
+                <button class="modal-close" style="position:absolute;top:14px;right:14px;background:rgba(255,255,255,0.2);">✕</button>
+                <img id="previewAvatarImg" class="profile-avatar" style="display:none;">
+                <div id="previewAvatarPlaceholder" class="profile-avatar-placeholder">👤</div>
+                <div class="profile-name-display" id="previewNameDisplay">User</div>
+                <div class="profile-username-display" id="previewUsernameDisplay" style="opacity:0.8;font-size:0.95rem;">@username</div>
+                <div class="profile-status-display" id="previewStatusDisplay">
+                    <span class="status-dot"></span>
+                    <span>Online</span>
+                </div>
+            </div>
+            <div class="profile-bio-section">
+                <div class="profile-bio-card">
+                    <h3>About</h3>
+                    <p id="previewBioDisplay">No bio yet</p>
+                </div>
+            </div>
+            <div class="modal-footer" style="gap:12px;">
+                <button class="btn btn-primary" id="dmUserBtn" style="flex:1;">
+                    💬 Message
+                </button>
+                <button class="btn btn-secondary" id="callUserBtn" style="flex:1;">
+                    📞 Call
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Confirm Modal -->
     <div class="modal-overlay" id="confirmModal">
         <div class="modal">
@@ -2164,6 +2697,53 @@
 
     <!-- Toast -->
     <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Call Screen -->
+    <div class="call-screen" id="callScreen">
+        <div class="call-bg"></div>
+        <div class="call-content">
+            <div class="call-avatar" id="callAvatar">👤</div>
+            <div class="call-name" id="callName">Calling...</div>
+            <div class="call-status" id="callStatus">Connecting...</div>
+            <div class="call-timer" id="callTimer"></div>
+            
+            <div class="call-videos" id="callVideos">
+                <video id="remoteVideo" autoplay playsinline></video>
+                <video id="localVideo" autoplay playsinline muted></video>
+            </div>
+            
+            <div class="call-controls">
+                <button class="call-control-btn" id="toggleMicBtn" title="Mute/Unmute">
+                    <span class="call-icon">🎤</span>
+                </button>
+                <button class="call-control-btn" id="toggleCamBtn" title="Camera On/Off">
+                    <span class="call-icon">📷</span>
+                </button>
+                <button class="call-control-btn end-call" id="endCallBtn" title="End Call">
+                    <span class="call-icon">📞</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Incoming Call Modal -->
+    <div class="incoming-call-modal" id="incomingCallModal">
+        <div class="incoming-call-card">
+            <div class="incoming-call-avatar" id="incomingCallAvatar">👤</div>
+            <div class="incoming-call-name" id="incomingCallName">Someone</div>
+            <div class="incoming-call-type" id="incomingCallType">Incoming Voice Call</div>
+            <div class="incoming-call-actions">
+                <button class="incoming-call-btn decline" id="declineCallBtn">
+                    <span>❌</span>
+                    <span>Decline</span>
+                </button>
+                <button class="incoming-call-btn accept" id="acceptCallBtn">
+                    <span>✅</span>
+                    <span>Accept</span>
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -3115,6 +3695,1008 @@
             openModal('confirmModal');
         }
 
+        // ==================== WEBRTC CALLING ====================
+        let localStream = null;
+        let remoteStream = null;
+        let peerConnection = null;
+        let currentCallId = null;
+        let currentCallType = null;
+        let callTimerInterval = null;
+        let callStartTime = null;
+        let calleeId = null;
+        let callerId = null;
+        let incomingCallData = null;
+        let callListener = null;
+        let ringtone = null;
+
+        const rtcConfig = {
+            iceServers: [
+                { urls: 'stun:stun.l.google.com:19302' },
+                { urls: 'stun:stun1.l.google.com:19302' },
+                { urls: 'stun:stun2.l.google.com:19302' },
+                { urls: 'stun:stun3.l.google.com:19302' },
+                { urls: 'stun:stun4.l.google.com:19302' }
+            ]
+        };
+
+        async function startCall(type) {
+            if (!currentRoomData || currentRoomData.members.length < 2) {
+                toast('Need at least 2 members to call');
+                return;
+            }
+
+            // Get the other member (1-to-1 call)
+            const otherMemberId = currentRoomData.members.find(id => id !== currentUser.uid);
+            if (!otherMemberId) {
+                toast('No one to call');
+                return;
+            }
+
+            calleeId = otherMemberId;
+            currentCallType = type;
+
+            try {
+                // Get user media
+                const constraints = {
+                    audio: true,
+                    video: type === 'video'
+                };
+                
+                localStream = await navigator.mediaDevices.getUserMedia(constraints);
+                
+                // Show call screen
+                showCallScreen(type, true);
+                
+                // Get callee info
+                const calleeDoc = await db.collection('users').doc(calleeId).get();
+                const calleeData = calleeDoc.exists ? calleeDoc.data() : {};
+                
+                updateCallUI(calleeData.name || 'User', calleeData.photoURL, 'Calling...');
+
+                // Create call document
+                const callDoc = db.collection('calls').doc();
+                currentCallId = callDoc.id;
+
+                // Create peer connection
+                peerConnection = new RTCPeerConnection(rtcConfig);
+
+                // Add local tracks
+                localStream.getTracks().forEach(track => {
+                    peerConnection.addTrack(track, localStream);
+                });
+
+                // Handle remote tracks
+                remoteStream = new MediaStream();
+                peerConnection.ontrack = event => {
+                    event.streams[0].getTracks().forEach(track => {
+                        remoteStream.addTrack(track);
+                    });
+                    $('remoteVideo').srcObject = remoteStream;
+                };
+
+                // Handle ICE candidates
+                peerConnection.onicecandidate = event => {
+                    if (event.candidate) {
+                        callDoc.collection('callerCandidates').add(event.candidate.toJSON());
+                    }
+                };
+
+                // Connection state change
+                peerConnection.onconnectionstatechange = () => {
+                    if (peerConnection.connectionState === 'connected') {
+                        updateCallUI(calleeData.name || 'User', calleeData.photoURL, 'Connected');
+                        startCallTimer();
+                    } else if (peerConnection.connectionState === 'disconnected' || 
+                               peerConnection.connectionState === 'failed') {
+                        endCall();
+                    }
+                };
+
+                // Create offer
+                const offer = await peerConnection.createOffer();
+                await peerConnection.setLocalDescription(offer);
+
+                // Save call to Firestore
+                await callDoc.set({
+                    callerId: currentUser.uid,
+                    callerName: currentUser.displayName || 'User',
+                    callerPhoto: currentUser.photoURL || '',
+                    calleeId: calleeId,
+                    type: type,
+                    status: 'ringing',
+                    roomId: currentRoom,
+                    offer: {
+                        type: offer.type,
+                        sdp: offer.sdp
+                    },
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                // Listen for answer
+                callDoc.onSnapshot(async snapshot => {
+                    const data = snapshot.data();
+                    if (!data) return;
+
+                    if (data.status === 'answered' && data.answer && !peerConnection.currentRemoteDescription) {
+                        const answer = new RTCSessionDescription(data.answer);
+                        await peerConnection.setRemoteDescription(answer);
+                    }
+
+                    if (data.status === 'declined' || data.status === 'ended') {
+                        toast(data.status === 'declined' ? 'Call declined' : 'Call ended');
+                        endCall();
+                    }
+                });
+
+                // Listen for callee ICE candidates
+                callDoc.collection('calleeCandidates').onSnapshot(snapshot => {
+                    snapshot.docChanges().forEach(async change => {
+                        if (change.type === 'added') {
+                            const candidate = new RTCIceCandidate(change.doc.data());
+                            await peerConnection.addIceCandidate(candidate);
+                        }
+                    });
+                });
+
+                // Auto end after 30 seconds if not answered
+                setTimeout(() => {
+                    if (currentCallId && $('callStatus').textContent === 'Calling...') {
+                        toast('No answer');
+                        endCall();
+                    }
+                }, 30000);
+
+            } catch (err) {
+                console.error('Call error:', err);
+                toast('Failed to start call: ' + err.message);
+                endCall();
+            }
+        }
+
+        function listenForIncomingCalls() {
+            if (callListener) callListener();
+
+            callListener = db.collection('calls')
+                .where('calleeId', '==', currentUser.uid)
+                .where('status', '==', 'ringing')
+                .onSnapshot(snapshot => {
+                    snapshot.docChanges().forEach(async change => {
+                        if (change.type === 'added') {
+                            const callData = change.doc.data();
+                            
+                            // Check if call is recent (within last 30 seconds)
+                            const callTime = callData.createdAt?.toDate?.() || new Date();
+                            if (Date.now() - callTime.getTime() > 30000) return;
+
+                            incomingCallData = { id: change.doc.id, ...callData };
+                            showIncomingCall(callData);
+                        }
+                    });
+                });
+        }
+
+        function showIncomingCall(callData) {
+            $('incomingCallName').textContent = callData.callerName || 'Someone';
+            $('incomingCallType').textContent = `Incoming ${callData.type === 'video' ? 'Video' : 'Voice'} Call`;
+            
+            if (callData.callerPhoto) {
+                $('incomingCallAvatar').innerHTML = `<img src="${callData.callerPhoto}">`;
+            } else {
+                $('incomingCallAvatar').textContent = (callData.callerName || 'S').charAt(0).toUpperCase();
+            }
+
+            $('incomingCallModal').classList.add('active');
+            
+            // Play ringtone effect (visual only - using CSS animation)
+            $('incomingCallAvatar').classList.add('ringing');
+        }
+
+        async function acceptCall() {
+            if (!incomingCallData) return;
+
+            $('incomingCallModal').classList.remove('active');
+            $('incomingCallAvatar').classList.remove('ringing');
+
+            currentCallId = incomingCallData.id;
+            currentCallType = incomingCallData.type;
+            callerId = incomingCallData.callerId;
+
+            try {
+                // Get media
+                const constraints = {
+                    audio: true,
+                    video: currentCallType === 'video'
+                };
+                
+                localStream = await navigator.mediaDevices.getUserMedia(constraints);
+                
+                // Show call screen
+                showCallScreen(currentCallType, false);
+                updateCallUI(incomingCallData.callerName, incomingCallData.callerPhoto, 'Connecting...');
+
+                // Create peer connection
+                peerConnection = new RTCPeerConnection(rtcConfig);
+
+                // Add local tracks
+                localStream.getTracks().forEach(track => {
+                    peerConnection.addTrack(track, localStream);
+                });
+
+                // Handle remote tracks
+                remoteStream = new MediaStream();
+                peerConnection.ontrack = event => {
+                    event.streams[0].getTracks().forEach(track => {
+                        remoteStream.addTrack(track);
+                    });
+                    $('remoteVideo').srcObject = remoteStream;
+                };
+
+                // Handle ICE candidates
+                const callDoc = db.collection('calls').doc(currentCallId);
+                
+                peerConnection.onicecandidate = event => {
+                    if (event.candidate) {
+                        callDoc.collection('calleeCandidates').add(event.candidate.toJSON());
+                    }
+                };
+
+                // Connection state change
+                peerConnection.onconnectionstatechange = () => {
+                    if (peerConnection.connectionState === 'connected') {
+                        updateCallUI(incomingCallData.callerName, incomingCallData.callerPhoto, 'Connected');
+                        startCallTimer();
+                    } else if (peerConnection.connectionState === 'disconnected' || 
+                               peerConnection.connectionState === 'failed') {
+                        endCall();
+                    }
+                };
+
+                // Set remote description (offer)
+                const offer = new RTCSessionDescription(incomingCallData.offer);
+                await peerConnection.setRemoteDescription(offer);
+
+                // Create answer
+                const answer = await peerConnection.createAnswer();
+                await peerConnection.setLocalDescription(answer);
+
+                // Update call document
+                await callDoc.update({
+                    status: 'answered',
+                    answer: {
+                        type: answer.type,
+                        sdp: answer.sdp
+                    }
+                });
+
+                // Listen for caller ICE candidates
+                callDoc.collection('callerCandidates').onSnapshot(snapshot => {
+                    snapshot.docChanges().forEach(async change => {
+                        if (change.type === 'added') {
+                            const candidate = new RTCIceCandidate(change.doc.data());
+                            await peerConnection.addIceCandidate(candidate);
+                        }
+                    });
+                });
+
+                // Listen for call end
+                callDoc.onSnapshot(snapshot => {
+                    const data = snapshot.data();
+                    if (data && data.status === 'ended') {
+                        endCall();
+                    }
+                });
+
+            } catch (err) {
+                console.error('Accept call error:', err);
+                toast('Failed to accept call');
+                endCall();
+            }
+
+            incomingCallData = null;
+        }
+
+        async function declineCall() {
+            if (!incomingCallData) return;
+
+            $('incomingCallModal').classList.remove('active');
+            $('incomingCallAvatar').classList.remove('ringing');
+
+            try {
+                await db.collection('calls').doc(incomingCallData.id).update({
+                    status: 'declined'
+                });
+            } catch (err) {
+                console.error('Decline error:', err);
+            }
+
+            incomingCallData = null;
+        }
+
+        async function endCall() {
+            // Update call status in Firestore
+            if (currentCallId) {
+                try {
+                    await db.collection('calls').doc(currentCallId).update({
+                        status: 'ended',
+                        endedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                } catch (err) {
+                    console.log('Error updating call status:', err);
+                }
+            }
+
+            // Stop all tracks
+            if (localStream) {
+                localStream.getTracks().forEach(track => track.stop());
+                localStream = null;
+            }
+
+            if (remoteStream) {
+                remoteStream.getTracks().forEach(track => track.stop());
+                remoteStream = null;
+            }
+
+            // Close peer connection
+            if (peerConnection) {
+                peerConnection.close();
+                peerConnection = null;
+            }
+
+            // Clear timer
+            if (callTimerInterval) {
+                clearInterval(callTimerInterval);
+                callTimerInterval = null;
+            }
+
+            // Reset video elements
+            $('localVideo').srcObject = null;
+            $('remoteVideo').srcObject = null;
+
+            // Hide call screen
+            $('callScreen').classList.remove('active');
+            if ($('callVideos')) $('callVideos').classList.remove('active');
+
+            // Reset state
+            currentCallId = null;
+            currentCallType = null;
+            calleeId = null;
+            callerId = null;
+            callStartTime = null;
+        }
+
+        function showCallScreen(type, isOutgoing) {
+            $('callScreen').classList.add('active');
+            $('callTimer').textContent = '';
+            
+            if (type === 'video') {
+                $('callVideos').classList.add('active');
+                $('localVideo').srcObject = localStream;
+                document.querySelector('.call-content').style.opacity = '0';
+            } else {
+                $('callVideos').classList.remove('active');
+                document.querySelector('.call-content').style.opacity = '1';
+            }
+
+            // Update button states
+            $('toggleMicBtn').classList.remove('muted');
+            $('toggleCamBtn').classList.remove('muted');
+            $('toggleCamBtn').style.display = type === 'video' ? 'flex' : 'none';
+        }
+
+        function updateCallUI(name, photoURL, status) {
+            $('callName').textContent = name || 'User';
+            $('callStatus').textContent = status;
+            
+            if (photoURL) {
+                $('callAvatar').innerHTML = `<img src="${photoURL}">`;
+            } else {
+                $('callAvatar').textContent = (name || 'U').charAt(0).toUpperCase();
+            }
+        }
+
+        function startCallTimer() {
+            callStartTime = Date.now();
+            $('callStatus').style.display = 'none';
+            
+            callTimerInterval = setInterval(() => {
+                const elapsed = Math.floor((Date.now() - callStartTime) / 1000);
+                const mins = Math.floor(elapsed / 60);
+                const secs = elapsed % 60;
+                $('callTimer').textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function toggleMic() {
+            if (!localStream) return;
+            
+            const audioTrack = localStream.getAudioTracks()[0];
+            if (audioTrack) {
+                audioTrack.enabled = !audioTrack.enabled;
+                $('toggleMicBtn').classList.toggle('muted', !audioTrack.enabled);
+                $('toggleMicBtn').querySelector('.call-icon').textContent = audioTrack.enabled ? '🎤' : '🔇';
+            }
+        }
+
+        function toggleCamera() {
+            if (!localStream) return;
+            
+            const videoTrack = localStream.getVideoTracks()[0];
+            if (videoTrack) {
+                videoTrack.enabled = !videoTrack.enabled;
+                $('toggleCamBtn').classList.toggle('muted', !videoTrack.enabled);
+                $('toggleCamBtn').querySelector('.call-icon').textContent = videoTrack.enabled ? '📷' : '🚫';
+            }
+        }
+
+        // ==================== USERNAME SYSTEM ====================
+        let usernameCheckTimeout = null;
+        let selectedUserId = null;
+        let currentDmId = null;
+        let currentDmData = null;
+        let dmsUnsubscribe = null;
+
+        // Validate username format
+        function isValidUsername(username) {
+            const regex = /^[a-zA-Z0-9_]{3,20}$/;
+            return regex.test(username);
+        }
+
+        // Check if username is available
+        async function checkUsernameAvailability(username) {
+            if (!username || !isValidUsername(username)) return false;
+            
+            const normalizedUsername = username.toLowerCase();
+            const snapshot = await db.collection('usernames').doc(normalizedUsername).get();
+            
+            if (!snapshot.exists) return true;
+            
+            // Check if it belongs to current user
+            return snapshot.data().uid === currentUser.uid;
+        }
+
+        // Handle username input with debounce
+        function handleUsernameInput() {
+            const username = $('editUsername').value.trim();
+            const statusEl = $('usernameStatus');
+            
+            clearTimeout(usernameCheckTimeout);
+            
+            if (!username) {
+                statusEl.textContent = '';
+                statusEl.style.color = '';
+                return;
+            }
+            
+            if (!isValidUsername(username)) {
+                statusEl.textContent = '❌ Invalid format (3-20 chars, alphanumeric + underscore only)';
+                statusEl.style.color = 'var(--danger)';
+                return;
+            }
+            
+            statusEl.textContent = '⏳ Checking...';
+            statusEl.style.color = 'var(--text-muted)';
+            
+            usernameCheckTimeout = setTimeout(async () => {
+                const available = await checkUsernameAvailability(username);
+                if (available) {
+                    statusEl.textContent = '✅ Username available';
+                    statusEl.style.color = 'var(--success)';
+                } else {
+                    statusEl.textContent = '❌ Username already taken';
+                    statusEl.style.color = 'var(--danger)';
+                }
+            }, 500);
+        }
+
+        // Save username (with transaction to ensure uniqueness)
+        async function saveUsername(newUsername) {
+            const normalizedUsername = newUsername.toLowerCase();
+            
+            // Get current username
+            const userDoc = await db.collection('users').doc(currentUser.uid).get();
+            const oldUsername = userDoc.data()?.username?.toLowerCase();
+            
+            // If same username, skip
+            if (oldUsername === normalizedUsername) return true;
+            
+            try {
+                // Use batch to atomically update
+                const batch = db.batch();
+                
+                // Delete old username reservation if exists
+                if (oldUsername) {
+                    batch.delete(db.collection('usernames').doc(oldUsername));
+                }
+                
+                // Check and reserve new username
+                const newUsernameDoc = await db.collection('usernames').doc(normalizedUsername).get();
+                if (newUsernameDoc.exists && newUsernameDoc.data().uid !== currentUser.uid) {
+                    throw new Error('Username already taken');
+                }
+                
+                // Reserve new username
+                batch.set(db.collection('usernames').doc(normalizedUsername), {
+                    uid: currentUser.uid,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                // Update user profile
+                batch.update(db.collection('users').doc(currentUser.uid), {
+                    username: newUsername
+                });
+                
+                await batch.commit();
+                return true;
+            } catch (err) {
+                console.error('Username save error:', err);
+                return false;
+            }
+        }
+
+        // ==================== USER SEARCH ====================
+        async function searchUsers() {
+            const query = $('userSearchInput').value.trim().toLowerCase();
+            const resultsEl = $('userSearchResults');
+            
+            if (!query) {
+                resultsEl.innerHTML = '<p style="text-align:center;color:var(--text-secondary);padding:48px;">Search for users by their username</p>';
+                return;
+            }
+            
+            if (query.length < 2) {
+                resultsEl.innerHTML = '<p style="text-align:center;color:var(--text-secondary);padding:48px;">Type at least 2 characters</p>';
+                return;
+            }
+            
+            resultsEl.innerHTML = '<div class="spinner" style="margin:48px auto;"></div>';
+            
+            try {
+                // Search users by username (case-insensitive prefix search)
+                const snapshot = await db.collection('users')
+                    .where('username', '>=', query)
+                    .where('username', '<=', query + '\uf8ff')
+                    .limit(20)
+                    .get();
+                
+                if (snapshot.empty) {
+                    resultsEl.innerHTML = '<p style="text-align:center;color:var(--text-secondary);padding:48px;">No users found</p>';
+                    return;
+                }
+                
+                let html = '';
+                snapshot.forEach(doc => {
+                    const user = doc.data();
+                    // Don't show current user
+                    if (doc.id === currentUser.uid) return;
+                    
+                    html += `
+                        <div class="user-search-card" onclick="openUserPreview('${doc.id}')">
+                            ${user.photoURL ? 
+                                `<img src="${user.photoURL}" class="user-search-avatar">` :
+                                `<div class="user-search-avatar">${(user.name || 'U').charAt(0).toUpperCase()}</div>`
+                            }
+                            <div class="user-search-info">
+                                <div class="user-search-name">${escapeHtml(user.name || 'User')}</div>
+                                <div class="user-search-username">@${escapeHtml(user.username || 'unknown')}</div>
+                                <div class="user-search-bio">${escapeHtml(user.bio || 'No bio')}</div>
+                            </div>
+                            <div class="user-search-status">
+                                <span class="status-dot ${user.online ? '' : 'offline'}"></span>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                resultsEl.innerHTML = html || '<p style="text-align:center;color:var(--text-secondary);padding:48px;">No users found</p>';
+            } catch (err) {
+                console.error('Search error:', err);
+                resultsEl.innerHTML = '<p style="text-align:center;color:var(--text-secondary);padding:48px;">Search error. Try again.</p>';
+            }
+        }
+
+        // Open user preview modal
+        async function openUserPreview(userId) {
+            if (!userId || userId === currentUser.uid) return;
+            
+            selectedUserId = userId;
+            showLoading();
+            
+            try {
+                const doc = await db.collection('users').doc(userId).get();
+                const user = doc.exists ? doc.data() : {};
+                
+                if (user.photoURL) {
+                    $('previewAvatarImg').src = user.photoURL;
+                    $('previewAvatarImg').style.display = 'block';
+                    $('previewAvatarPlaceholder').style.display = 'none';
+                } else {
+                    $('previewAvatarImg').style.display = 'none';
+                    $('previewAvatarPlaceholder').style.display = 'flex';
+                    $('previewAvatarPlaceholder').textContent = (user.name || 'U').charAt(0).toUpperCase();
+                }
+                
+                $('previewNameDisplay').textContent = user.name || 'User';
+                $('previewUsernameDisplay').textContent = '@' + (user.username || 'unknown');
+                $('previewBioDisplay').textContent = user.bio || 'No bio yet';
+                $('previewStatusDisplay').innerHTML = `
+                    <span class="status-dot ${user.online ? '' : 'offline'}"></span>
+                    <span>${user.online ? 'Online' : 'Offline'}</span>
+                `;
+                
+                closeModal('userSearchModal');
+                openModal('userPreviewModal');
+            } catch (err) {
+                toast('Error loading user profile');
+            }
+            hideLoading();
+        }
+
+        // ==================== DIRECT MESSAGES ====================
+        // Generate deterministic DM chat ID from two user IDs
+        function getDmChatId(uid1, uid2) {
+            return [uid1, uid2].sort().join('_');
+        }
+
+        // Start or open a DM conversation
+        async function startDirectMessage() {
+            if (!selectedUserId) return;
+            
+            closeModal('userPreviewModal');
+            showLoading();
+            
+            try {
+                const dmId = getDmChatId(currentUser.uid, selectedUserId);
+                
+                // Check if DM already exists
+                const dmDoc = await db.collection('directMessages').doc(dmId).get();
+                
+                if (!dmDoc.exists) {
+                    // Create new DM
+                    const otherUserDoc = await db.collection('users').doc(selectedUserId).get();
+                    const otherUser = otherUserDoc.data() || {};
+                    
+                    await db.collection('directMessages').doc(dmId).set({
+                        participants: [currentUser.uid, selectedUserId],
+                        participantData: {
+                            [currentUser.uid]: {
+                                name: currentUser.displayName || 'User',
+                                photoURL: currentUser.photoURL || ''
+                            },
+                            [selectedUserId]: {
+                                name: otherUser.name || 'User',
+                                photoURL: otherUser.photoURL || ''
+                            }
+                        },
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        lastMessage: '',
+                        lastMessageTime: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
+                
+                // Switch to DMs tab
+                switchChatTab('dms');
+                
+                // Open the DM
+                const dmData = dmDoc.exists ? dmDoc.data() : (await db.collection('directMessages').doc(dmId).get()).data();
+                openDirectMessage(dmId, dmData);
+                
+            } catch (err) {
+                console.error('DM error:', err);
+                toast('Error starting conversation');
+            }
+            hideLoading();
+        }
+
+        // Load direct messages list
+        function loadDirectMessages() {
+            if (dmsUnsubscribe) dmsUnsubscribe();
+            
+            dmsUnsubscribe = db.collection('directMessages')
+                .where('participants', 'array-contains', currentUser.uid)
+                .orderBy('lastMessageTime', 'desc')
+                .onSnapshot(snapshot => {
+                    const list = $('dmList');
+                    
+                    if (snapshot.empty) {
+                        list.innerHTML = `<div class="empty-state"><span class="icon">👤</span><p>No direct messages yet.<br>Search for users to start chatting!</p></div>`;
+                        return;
+                    }
+                    
+                    list.innerHTML = '';
+                    snapshot.forEach(doc => {
+                        const dm = doc.data();
+                        // Get the other participant
+                        const otherUid = dm.participants.find(id => id !== currentUser.uid);
+                        const otherUser = dm.participantData?.[otherUid] || { name: 'User' };
+                        
+                        const div = document.createElement('div');
+                        div.className = 'dm-item' + (currentDmId === doc.id ? ' active' : '');
+                        div.innerHTML = `
+                            ${otherUser.photoURL ? 
+                                `<img src="${otherUser.photoURL}" class="dm-avatar">` :
+                                `<div class="dm-avatar">${(otherUser.name || 'U').charAt(0).toUpperCase()}</div>`
+                            }
+                            <div class="dm-details">
+                                <div class="dm-name">${escapeHtml(otherUser.name || 'User')}</div>
+                                <div class="dm-preview">${escapeHtml(dm.lastMessage || 'No messages yet')}</div>
+                            </div>
+                            <div class="room-meta">
+                                <div class="room-time">${dm.lastMessageTime ? formatTime(dm.lastMessageTime.toDate()) : ''}</div>
+                            </div>
+                        `;
+                        div.onclick = () => openDirectMessage(doc.id, dm);
+                        list.appendChild(div);
+                    });
+                });
+        }
+
+        // Open a direct message conversation
+        function openDirectMessage(dmId, dmData) {
+            console.log('Opening DM:', dmId);
+            
+            // Clean up previous
+            if (messagesUnsubscribe) {
+                messagesUnsubscribe();
+                messagesUnsubscribe = null;
+            }
+            
+            // Clear room state
+            currentRoom = null;
+            currentRoomData = null;
+            
+            // Set DM state
+            currentDmId = dmId;
+            currentDmData = dmData;
+            
+            // Get other participant info
+            const otherUid = dmData.participants.find(id => id !== currentUser.uid);
+            const otherUser = dmData.participantData?.[otherUid] || { name: 'User' };
+            
+            // Update UI
+            $('chatTitle').textContent = otherUser.name || 'User';
+            $('messagesContainer').innerHTML = '';
+            allMessages = [];
+            cancelReply();
+            
+            // Hide admin controls for DMs
+            document.querySelectorAll('.admin-only').forEach(el => {
+                el.style.display = 'none';
+            });
+            
+            // Update layout
+            updateLayout();
+            
+            // Load DM messages
+            loadDmMessages();
+            listenDmTyping();
+            updateDmOnlineStatus(otherUid);
+        }
+
+        // Load DM messages
+        function loadDmMessages() {
+            if (!currentDmId) return;
+            
+            if (messagesUnsubscribe) messagesUnsubscribe();
+            
+            messagesUnsubscribe = db.collection('directMessages').doc(currentDmId)
+                .collection('messages')
+                .orderBy('timestamp', 'asc')
+                .onSnapshot(snapshot => {
+                    const container = $('messagesContainer');
+                    const wrapper = $('messagesWrapper');
+                    const wasAtBottom = wrapper.scrollHeight - wrapper.scrollTop - wrapper.clientHeight < 100;
+                    
+                    container.innerHTML = '';
+                    allMessages = [];
+                    
+                    snapshot.forEach(doc => {
+                        const msg = { id: doc.id, ...doc.data() };
+                        allMessages.push(msg);
+                        
+                        if (msg.type === 'system') {
+                            container.innerHTML += `<div class="system-msg">${escapeHtml(msg.text)}</div>`;
+                        } else {
+                            container.appendChild(createDmMessageElement(msg));
+                        }
+                    });
+                    
+                    // Hide pinned banner for DMs
+                    $('pinnedBanner').classList.remove('active');
+                    
+                    if (wasAtBottom) scrollToBottom();
+                    updateScrollButton();
+                });
+        }
+
+        // Create DM message element
+        function createDmMessageElement(msg) {
+            const isOwn = msg.senderId === currentUser.uid;
+            
+            const div = document.createElement('div');
+            div.className = `message ${isOwn ? 'own' : 'other'}`;
+            div.dataset.id = msg.id;
+            
+            let html = '';
+            
+            html += `<div class="msg-bubble" style="position:relative;">`;
+            
+            if (msg.replyTo) {
+                html += `<div class="msg-reply">↩️ ${escapeHtml(msg.replyTo.text?.substring(0, 50) || '')}</div>`;
+            }
+            
+            if (msg.imageURL) {
+                html += `<img src="${msg.imageURL}" class="msg-image" onclick="viewImage('${msg.imageURL}')">`;
+            }
+            
+            if (msg.fileURL) {
+                html += `<a href="${msg.fileURL}" target="_blank" class="msg-file">📎 ${escapeHtml(msg.fileName || 'File')}</a>`;
+            }
+            
+            if (msg.text) {
+                html += `<div class="msg-text">${escapeHtml(msg.text).replace(/\n/g, '<br>')}</div>`;
+            }
+            
+            html += `<div class="msg-meta">
+                <span>${msg.timestamp ? formatTime(msg.timestamp.toDate()) : ''}</span>
+                ${isOwn ? (msg.read ? '<span>✓✓</span>' : '<span>✓</span>') : ''}
+            </div>`;
+            
+            html += `<div class="msg-actions">
+                <button class="msg-action-btn" onclick="replyToMessage('${msg.id}')">↩️</button>
+                ${isOwn ? `<button class="msg-action-btn" onclick="deleteDmMessage('${msg.id}')">🗑️</button>` : ''}
+            </div>`;
+            
+            html += '</div>';
+            
+            div.innerHTML = html;
+            return div;
+        }
+
+        // Send DM message
+        async function sendDmMessage() {
+            const text = $('messageInput').value.trim();
+            if (!text || !currentDmId) return;
+            
+            const msgData = {
+                senderId: currentUser.uid,
+                senderName: currentUser.displayName || 'User',
+                text: text,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                read: false
+            };
+            
+            if (replyingTo) {
+                msgData.replyTo = { id: replyingTo.id, text: replyingTo.text };
+            }
+            
+            $('messageInput').value = '';
+            $('messageInput').style.height = 'auto';
+            cancelReply();
+            
+            try {
+                await db.collection('directMessages').doc(currentDmId).collection('messages').add(msgData);
+                await db.collection('directMessages').doc(currentDmId).update({
+                    lastMessage: text.substring(0, 50),
+                    lastMessageTime: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                await db.collection('directMessages').doc(currentDmId).collection('typing').doc(currentUser.uid).delete();
+                scrollToBottom();
+            } catch (err) {
+                toast('Error sending message');
+            }
+        }
+
+        // Delete DM message
+        async function deleteDmMessage(msgId) {
+            try {
+                await db.collection('directMessages').doc(currentDmId).collection('messages').doc(msgId).delete();
+                toast('Message deleted');
+            } catch (err) {
+                toast('Error deleting');
+            }
+        }
+
+        // DM typing indicator
+        function handleDmTyping() {
+            if (!currentDmId) return;
+            
+            db.collection('directMessages').doc(currentDmId).collection('typing').doc(currentUser.uid).set({
+                name: currentUser.displayName || 'User',
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            
+            clearTimeout(typingTimeout);
+            typingTimeout = setTimeout(() => {
+                db.collection('directMessages').doc(currentDmId).collection('typing').doc(currentUser.uid).delete();
+            }, 2000);
+        }
+
+        function listenDmTyping() {
+            if (!currentDmId) return;
+            
+            db.collection('directMessages').doc(currentDmId).collection('typing').onSnapshot(snapshot => {
+                const typingUsers = [];
+                snapshot.forEach(doc => {
+                    if (doc.id !== currentUser.uid) {
+                        typingUsers.push(doc.data().name);
+                    }
+                });
+                
+                if (typingUsers.length > 0) {
+                    $('chatStatus').innerHTML = `
+                        <span class="typing-indicator">
+                            typing
+                            <span class="typing-dots"><span></span><span></span><span></span></span>
+                        </span>`;
+                } else {
+                    const otherUid = currentDmData?.participants?.find(id => id !== currentUser.uid);
+                    if (otherUid) updateDmOnlineStatus(otherUid);
+                }
+            });
+        }
+
+        async function updateDmOnlineStatus(userId) {
+            try {
+                const doc = await db.collection('users').doc(userId).get();
+                const online = doc.exists && doc.data().online;
+                $('chatStatus').textContent = online ? 'Online' : 'Offline';
+            } catch (e) {
+                $('chatStatus').textContent = '';
+            }
+        }
+
+        // Direct call from user preview
+        async function startDirectCall() {
+            if (!selectedUserId) return;
+            
+            closeModal('userPreviewModal');
+            
+            // Create a temporary room-like structure for calling
+            const tempRoomData = {
+                members: [currentUser.uid, selectedUserId],
+                name: 'Direct Call'
+            };
+            
+            // Store temporarily
+            const originalRoom = currentRoom;
+            const originalRoomData = currentRoomData;
+            
+            currentRoomData = tempRoomData;
+            
+            await startCall('voice');
+            
+            // Restore
+            currentRoom = originalRoom;
+            currentRoomData = originalRoomData;
+        }
+
+        // Switch between Rooms and DMs tabs
+        function switchChatTab(tab) {
+            document.querySelectorAll('.chat-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`.chat-tab[data-tab="${tab}"]`).classList.add('active');
+            
+            if (tab === 'rooms') {
+                $('roomsSection').style.display = 'block';
+                $('dmsSection').style.display = 'none';
+            } else {
+                $('roomsSection').style.display = 'none';
+                $('dmsSection').style.display = 'block';
+            }
+        }
+
+        // Close DM (back button)
+        function closeDm() {
+            if (messagesUnsubscribe) {
+                messagesUnsubscribe();
+                messagesUnsubscribe = null;
+            }
+            currentDmId = null;
+            currentDmData = null;
+            allMessages = [];
+            cancelReply();
+            updateLayout();
+        }
+
         // ==================== SEARCH ====================
         function searchMessages() {
             const query = $('searchInput').value.toLowerCase().trim();
@@ -3166,17 +4748,47 @@
             $('googleSignIn').onclick = handleGoogleSignIn;
             
             // Sidebar buttons
+            $('searchUsersBtn').onclick = () => { openModal('userSearchModal'); $('userSearchInput').focus(); };
             $('themeToggle').onclick = toggleTheme;
             $('settingsBtn').onclick = () => openModal('settingsModal');
             $('myProfileBtn').onclick = () => openProfile(currentUser?.uid);
             $('createRoomBtn').onclick = () => openModal('createRoomModal');
             $('joinRoomBtn').onclick = () => openModal('joinRoomModal');
             
+            // Chat tabs
+            $('roomsTab').onclick = () => switchChatTab('rooms');
+            $('dmsTab').onclick = () => switchChatTab('dms');
+            
+            // User search
+            $('userSearchInput').oninput = searchUsers;
+            
+            // User preview actions
+            $('dmUserBtn').onclick = startDirectMessage;
+            $('callUserBtn').onclick = startDirectCall;
+            
+            // Username input
+            $('editUsername').oninput = handleUsernameInput;
+            
             // Chat header
-            $('backBtn').onclick = closeRoom;
+            $('backBtn').onclick = () => {
+                if (currentDmId) {
+                    closeDm();
+                } else {
+                    closeRoom();
+                }
+            };
             $('chatInfoBtn').onclick = openRoomInfo;
+            $('voiceCallBtn').onclick = () => startCall('voice');
+            $('videoCallBtn').onclick = () => startCall('video');
             $('searchMsgBtn').onclick = () => { openModal('searchModal'); $('searchInput').focus(); };
             $('chatMenuBtn').onclick = () => openModal('chatMenuModal');
+            
+            // Call controls
+            $('toggleMicBtn').onclick = toggleMic;
+            $('toggleCamBtn').onclick = toggleCamera;
+            $('endCallBtn').onclick = endCall;
+            $('acceptCallBtn').onclick = acceptCall;
+            $('declineCallBtn').onclick = declineCall;
             
             // Pinned banner
             $('pinnedBanner').onclick = () => {
@@ -3188,17 +4800,31 @@
             $('messageInput').oninput = function() {
                 this.style.height = 'auto';
                 this.style.height = Math.min(this.scrollHeight, 120) + 'px';
-                handleTyping();
+                if (currentDmId) {
+                    handleDmTyping();
+                } else {
+                    handleTyping();
+                }
             };
             
             $('messageInput').onkeydown = function(e) {
                 if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
-                    sendMessage();
+                    if (currentDmId) {
+                        sendDmMessage();
+                    } else {
+                        sendMessage();
+                    }
                 }
             };
             
-            $('sendBtn').onclick = sendMessage;
+            $('sendBtn').onclick = () => {
+                if (currentDmId) {
+                    sendDmMessage();
+                } else {
+                    sendMessage();
+                }
+            };
             $('emojiBtn').onclick = () => $('emojiPicker').classList.toggle('active');
             $('imageBtn').onclick = () => $('imageInput').click();
             $('fileBtn').onclick = () => $('fileInput').click();
@@ -3269,8 +4895,10 @@
                     await setUserOnline(true);
                     showMainApp();
                     loadRooms();
+                    listenForIncomingCalls();
                 } else {
                     currentUser = null;
+                    if (callListener) callListener();
                     showAuthScreen();
                 }
             });
@@ -3278,6 +4906,7 @@
             // Before unload
             window.onbeforeunload = () => {
                 if (currentUser) setUserOnline(false);
+                if (currentCallId) endCall();
             };
         }
         
